@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cadena-suministros-deployment
+  labels:
+    app: cadena-suministros
+spec:
+  replicas: 2 # Levanta 2 copias de tu app para alta disponibilidad
+  selector:
+    matchLabels:
+      app: cadena-suministros
+  template:
+    metadata:
+      labels:
+        app: cadena-suministros
+    spec:
+      containers:
+      - name: web
+        image: cadena-suministros:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_CONNECTION_STRING
+          valueFrom:
+            secretKeyRef:
+              name: db-connection-secret
+              key: DB_CONNECTION_STRING
