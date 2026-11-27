@@ -1,0 +1,41 @@
+@model IEnumerable<CadenaSuministro.Models.Cotizacion>
+
+@{
+    ViewData["Title"] = "Cotizaciones";
+}
+
+<h1>Cotizaciones</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear Nueva Cotización</a>
+</p>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Proveedor)</th>
+            <th>@Html.DisplayNameFor(model => model.Producto)</th>
+            <th>@Html.DisplayNameFor(model => model.Cantidad)</th>
+            <th>@Html.DisplayNameFor(model => model.MontoEstimado)</th>
+            <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+            <th>@Html.DisplayNameFor(model => model.Estado)</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Proveedor.Nombre)</td>
+            <td>@Html.DisplayFor(modelItem => item.Producto.Descripcion)</td>
+            <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
+            <td>@item.MontoEstimado.ToString("C")</td>
+            <td>@item.Fecha.ToString("yyyy-MM-dd")</td>
+            <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
