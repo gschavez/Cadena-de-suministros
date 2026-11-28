@@ -1,0 +1,119 @@
+
+@model CadenaSuministro.Models.OrdenCompra
+
+@{
+    ViewData["Title"] = "Detalles de la orden";
+}
+
+<h1>Detalles de la orden de compra</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-7">
+
+        <h4>Información general</h4>
+
+        <dl class="row">
+            <dt class="col-sm-4">Número de orden</dt>
+            <dd class="col-sm-8">@Model.Id</dd>
+
+            <dt class="col-sm-4">Cotización</dt>
+            <dd class="col-sm-8">#@Model.CotizacionId</dd>
+
+            <dt class="col-sm-4">Proveedor</dt>
+            <dd class="col-sm-8">
+                @Model.Cotizacion?.Proveedor?.Nombre
+            </dd>
+
+            <dt class="col-sm-4">Producto</dt>
+            <dd class="col-sm-8">
+                @Model.Cotizacion?.Producto?.Descripcion
+            </dd>
+
+            <dt class="col-sm-4">Cantidad</dt>
+            <dd class="col-sm-8">
+                @Model.Cotizacion?.Cantidad
+            </dd>
+
+            <dt class="col-sm-4">Monto estimado</dt>
+            <dd class="col-sm-8">
+                @Model.Cotizacion?.MontoEstimado.ToString("C")
+            </dd>
+
+            <dt class="col-sm-4">Empleado responsable</dt>
+            <dd class="col-sm-8">
+                @Model.Empleado?.Nombre
+            </dd>
+
+            <dt class="col-sm-4">Cargo</dt>
+            <dd class="col-sm-8">
+                @Model.Empleado?.Cargo
+            </dd>
+
+            <dt class="col-sm-4">Departamento</dt>
+            <dd class="col-sm-8">
+                @Model.Empleado?.Departamento
+            </dd>
+
+            <dt class="col-sm-4">Estado</dt>
+            <dd class="col-sm-8">
+                @if (Model.Estado == EstadoOrden.Pendiente)
+                {
+                    <span class="badge bg-warning text-dark">
+                        Pendiente
+                    </span>
+                }
+                else if (Model.Estado == EstadoOrden.Aprobada)
+                {
+                    <span class="badge bg-success">
+                        Aprobada
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">
+                        Rechazada
+                    </span>
+                }
+            </dd>
+
+            <dt class="col-sm-4">Fecha de decisión</dt>
+            <dd class="col-sm-8">
+                @(Model.FechaAprobacion?.ToString("dd/MM/yyyy HH:mm") ?? "Sin decisión")
+            </dd>
+        </dl>
+
+        <hr />
+
+        @if (Model.Estado == EstadoOrden.Pendiente)
+        {
+            <form asp-action="Aprobar"
+                  asp-route-id="@Model.Id"
+                  method="post"
+                  class="d-inline">
+                @Html.AntiForgeryToken()
+
+                <button type="submit" class="btn btn-success">
+                    Aprobar orden
+                </button>
+            </form>
+
+            <form asp-action="Rechazar"
+                  asp-route-id="@Model.Id"
+                  method="post"
+                  class="d-inline">
+                @Html.AntiForgeryToken()
+
+                <button type="submit" class="btn btn-danger">
+                    Rechazar orden
+                </button>
+            </form>
+        }
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Volver al listado
+        </a>
+
+    </div>
+</div>

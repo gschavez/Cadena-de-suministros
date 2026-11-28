@@ -1,0 +1,66 @@
+﻿@model CadenaSuministro.Models.Cotizacion
+
+@{
+    ViewData["Title"] = "Editar Cotizaci├│n";
+}
+
+<h1>Editar Cotizaci├│n</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group mb-3">
+                <label asp-for="ProveedorId" class="control-label"></label>
+                <select asp-for="ProveedorId" class="form-control" asp-items="ViewBag.ProveedorId">
+                    <option value="">-- Seleccione un Proveedor --</option>
+                </select>
+                <span asp-validation-for="ProveedorId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ProductoId" class="control-label"></label>
+                <select asp-for="ProductoId" class="form-control" asp-items="ViewBag.ProductoId">
+                    <option value="">-- Seleccione un Producto --</option>
+                </select>
+                <span asp-validation-for="ProductoId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Cantidad" class="control-label"></label>
+                <input asp-for="Cantidad" class="form-control" />
+                <span asp-validation-for="Cantidad" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MontoEstimado" class="control-label"></label>
+                <input asp-for="MontoEstimado" class="form-control" />
+                <span asp-validation-for="MontoEstimado" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Fecha" class="control-label"></label>
+                <input asp-for="Fecha" class="form-control" type="date" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Estado" class="control-label"></label>
+                <select asp-for="Estado" class="form-control" asp-items="Html.GetEnumSelectList<CadenaSuministro.Models.EstadoCotizacion>()"></select>
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

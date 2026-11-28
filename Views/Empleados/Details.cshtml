@@ -1,0 +1,36 @@
+
+@model CadenaSuministro.Models.Empleado
+
+@{
+    ViewData["Title"] = "Detalles del empleado";
+}
+
+<h1>Detalles del empleado</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <dl class="row">
+            <dt class="col-sm-4">Identificación</dt>
+            <dd class="col-sm-8">@Model.Id</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Nombre)</dt>
+            <dd class="col-sm-8">@Model.Nombre</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Cargo)</dt>
+            <dd class="col-sm-8">@Model.Cargo</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Departamento)</dt>
+            <dd class="col-sm-8">@Model.Departamento</dd>
+        </dl>
+
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+            Editar
+        </a>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Volver al listado
+        </a>
+    </div>
+</div>
