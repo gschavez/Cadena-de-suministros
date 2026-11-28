@@ -1,0 +1,34 @@
+@model CadenaSuministro.Models.Producto
+
+@{
+    ViewData["Title"] = "Detalle del ítem";
+    var bajo = Model.Cantidad <= Model.StockMinimo;
+}
+
+<h1>Detalle del ítem</h1>
+<hr />
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Codigo)</dt>
+    <dd class="col-sm-9">@Model.Codigo</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Descripcion)</dt>
+    <dd class="col-sm-9">@Model.Descripcion</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Tipo)</dt>
+    <dd class="col-sm-9">@Model.Tipo</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.UnidadMedida)</dt>
+    <dd class="col-sm-9">@Model.UnidadMedida</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Cantidad)</dt>
+    <dd class="col-sm-9">
+        @Model.Cantidad
+        @if (bajo) { <span class="badge bg-danger">Stock bajo</span> }
+        else { <span class="badge bg-success">OK</span> }
+    </dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.StockMinimo)</dt>
+    <dd class="col-sm-9">@Model.StockMinimo</dd>
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.PrecioUnitario)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.PrecioUnitario)</dd>
+</dl>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Editar</a>
+    <a asp-action="Ajustar" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Ajustar stock</a>
+    <a asp-action="Index" class="btn btn-link">Volver a la lista</a>
+</div>

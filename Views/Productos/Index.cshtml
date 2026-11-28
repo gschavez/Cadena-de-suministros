@@ -1,0 +1,90 @@
+@model IEnumerable<CadenaSuministro.Models.Producto>
+
+@{
+    ViewData["Title"] = "Inventario";
+    var tipoSel = ViewData["Tipo"] as TipoItem?;
+}
+
+<h1>Inventario</h1>
+
+@if (TempData["Ok"] != null)
+{
+    <div class="alert alert-success">@TempData["Ok"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="row mb-3">
+    <div class="col-auto"><span class="badge bg-secondary fs-6">Total ítems: @ViewData["Total"]</span></div>
+    <div class="col-auto"><span class="badge bg-danger fs-6">Con stock bajo: @ViewData["TotalBajo"]</span></div>
+</div>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Nuevo ítem</a>
+</p>
+
+<form asp-action="Index" method="get" class="row g-2 mb-3 align-items-center">
+    <div class="col-auto">
+        <input type="text" name="buscar" value="@ViewData["Buscar"]" class="form-control"
+               placeholder="Buscar por código o descripción" />
+    </div>
+    <div class="col-auto">
+        <select name="tipo" class="form-select">
+            <option value="">Todos los tipos</option>
+            @foreach (var t in Enum.GetValues<TipoItem>())
+            {
+                <option value="@t" selected="@(tipoSel == t)">@t</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto form-check ms-2">
+        <input type="checkbox" class="form-check-input" id="soloBajo" name="soloBajo" value="true"
+               @((bool)(ViewData["SoloBajo"] ?? false) ? "checked" : "") />
+        <label class="form-check-label" for="soloBajo">Solo stock bajo</label>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Filtrar</button>
+        <a asp-action="Index" class="btn btn-link">Limpiar</a>
+    </div>
+</form>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Codigo)</th>
+            <th>@Html.DisplayNameFor(m => m.Descripcion)</th>
+            <th>@Html.DisplayNameFor(m => m.Tipo)</th>
+            <th>@Html.DisplayNameFor(m => m.Cantidad)</th>
+            <th>@Html.DisplayNameFor(m => m.StockMinimo)</th>
+            <th>@Html.DisplayNameFor(m => m.PrecioUnitario)</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var bajo = item.Cantidad <= item.StockMinimo;
+            <tr class="@(bajo ? "table-danger" : "")">
+                <td>@item.Codigo</td>
+                <td>@item.Descripcion</td>
+                <td>@item.Tipo</td>
+                <td>@item.Cantidad @item.UnidadMedida</td>
+                <td>@item.StockMinimo</td>
+                <td>@Html.DisplayFor(m => item.PrecioUnitario)</td>
+                <td>
+                    @if (bajo) { <span class="badge bg-danger">Stock bajo</span> }
+                    else { <span class="badge bg-success">OK</span> }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-action="Ajustar" asp-route-id="@item.Id">Ajustar stock</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

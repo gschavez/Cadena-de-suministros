@@ -1,0 +1,21 @@
+@model CadenaSuministro.Models.Producto
+
+@{
+    ViewData["Title"] = "Nuevo ítem de inventario";
+}
+
+<h1>Nuevo ítem de inventario</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <partial name="_Form" model="Model" />
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a asp-action="Index" class="btn btn-link">Volver a la lista</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
