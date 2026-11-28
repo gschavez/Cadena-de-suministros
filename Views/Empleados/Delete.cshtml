@@ -1,0 +1,39 @@
+
+@model CadenaSuministro.Models.Empleado
+
+@{
+    ViewData["Title"] = "Eliminar empleado";
+}
+
+<h1>Eliminar empleado</h1>
+
+<h4>¿Estás seguro de que deseas eliminar este empleado?</h4>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <dl class="row">
+            <dt class="col-sm-4">Nombre</dt>
+            <dd class="col-sm-8">@Model.Nombre</dd>
+
+            <dt class="col-sm-4">Cargo</dt>
+            <dd class="col-sm-8">@Model.Cargo</dd>
+
+            <dt class="col-sm-4">Departamento</dt>
+            <dd class="col-sm-8">@Model.Departamento</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <button type="submit" class="btn btn-danger">
+                Confirmar eliminación
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                Cancelar
+            </a>
+        </form>
+    </div>
+</div>

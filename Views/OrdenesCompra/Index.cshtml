@@ -1,0 +1,121 @@
+
+@model IEnumerable<CadenaSuministro.Models.OrdenCompra>
+
+@{
+    ViewData["Title"] = "Órdenes de compra";
+}
+
+<h1>Órdenes de compra</h1>
+
+<p>Gestión y aprobación de órdenes de compra.</p>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Mensaje"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Crear orden de compra
+    </a>
+</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Todavía no hay órdenes de compra registradas.
+    </div>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Número</th>
+                <th>Cotización</th>
+                <th>Proveedor</th>
+                <th>Producto</th>
+                <th>Empleado responsable</th>
+                <th>Estado</th>
+                <th>Fecha de decisión</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var orden in Model)
+            {
+                <tr>
+                    <td>@orden.Id</td>
+                    <td>#@orden.CotizacionId</td>
+                    <td>@orden.Cotizacion?.Proveedor?.Nombre</td>
+                    <td>@orden.Cotizacion?.Producto?.Descripcion</td>
+                    <td>@orden.Empleado?.Nombre</td>
+                    <td>
+                        @if (orden.Estado == EstadoOrden.Pendiente)
+                        {
+                            <span class="badge bg-warning text-dark">
+                                Pendiente
+                            </span>
+                        }
+                        else if (orden.Estado == EstadoOrden.Aprobada)
+                        {
+                            <span class="badge bg-success">
+                                Aprobada
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                Rechazada
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        @(orden.FechaAprobacion?.ToString("dd/MM/yyyy HH:mm") ?? "Sin decisión")
+                    </td>
+                    <td>
+                        <a asp-action="Details"
+                           asp-route-id="@orden.Id"
+                           class="btn btn-info btn-sm">
+                            Detalles
+                        </a>
+
+                        @if (orden.Estado == EstadoOrden.Pendiente)
+                        {
+                            <form asp-action="Aprobar"
+                                  asp-route-id="@orden.Id"
+                                  method="post"
+                                  class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit"
+                                        class="btn btn-success btn-sm">
+                                    Aprobar
+                                </button>
+                            </form>
+
+                            <form asp-action="Rechazar"
+                                  asp-route-id="@orden.Id"
+                                  method="post"
+                                  class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm">
+                                    Rechazar
+                                </button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
